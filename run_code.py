@@ -4,6 +4,16 @@ import os
 import string
 import pyAesCrypt
 from random import choice
+import time
+
+
+def how_much_time(func):
+    def get_run_time_second(*args, **kwargs):
+        start_time = time.time()
+        func(*args, **kwargs)
+        print(f'Run time = {time.time() - start_time} sec.')
+
+    return get_run_time_second
 
 
 def get_relative_path(file_name: str = 'data.txt') -> str:
@@ -35,6 +45,7 @@ def generate_random_text(length: int) -> str:
     return ''.join(text_generator)
 
 
+@how_much_time
 def filling_file(length: int = 1000) -> None:
     """
     Заполняем файл
@@ -46,7 +57,7 @@ def filling_file(length: int = 1000) -> None:
         file.write(generate_random_text(length=length))
 
 
-filling_file(length=2000)
+filling_file(length=100000000)
 
 # input shadow password
 password = getpass.getpass(prompt='Input your password: ')
@@ -54,5 +65,6 @@ print('Password written down')
 
 # encrypt my data
 pyAesCrypt.encryptFile(infile=get_relative_path(file_name='data.txt'),
-                       outfile='data.txt.aes', #TODO можно сделать более универсально
+                       outfile='data.txt.aes',
+                       # TODO можно сделать более универсально
                        passw=password)
